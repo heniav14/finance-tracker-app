@@ -13,6 +13,7 @@ import "./globals.css";
 import Link from "next/link";
 import { ChartColumnBigIcon } from "lucide-react";
 
+
 const poppins = Poppins({
   weight: [
     "100",
