@@ -60,7 +60,11 @@ export default function TransactionForm({
       transactionType: "Income",
     },
   });
-
+  const transactionType = form.watch("transactionType");
+  const filteredCategories = categories.filter(
+    (category) => category.type === transactionType.toLowerCase(),
+  );
+  console.log(categories, filteredCategories);
   const handleSubmit = async (data: z.infer<typeof transactionFormSchema>) => {
     console.log(data);
   };
@@ -77,7 +81,13 @@ export default function TransactionForm({
                 <FormItem>
                   <FormLabel>Transaction Type</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select
+                      onValueChange={(newValue) => {
+                        field.onChange(newValue);
+                        form.setValue("categoryID", 0);
+                      }}
+                      value={field.value}
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -109,7 +119,7 @@ export default function TransactionForm({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {categories.map((category) => (
+                        {filteredCategories.map((category) => (
                           <SelectItem
                             key={category.id}
                             value={category.id.toString()}
