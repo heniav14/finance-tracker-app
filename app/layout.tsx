@@ -12,6 +12,7 @@ import {
 import "./globals.css";
 import Link from "next/link";
 import { ChartColumnBigIcon } from "lucide-react";
+import { Toaster } from "@/components/ui/sonner";
 
 
 const poppins = Poppins({
@@ -70,6 +71,7 @@ export default function RootLayout({
             </div>
           </nav>
           {children}
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>

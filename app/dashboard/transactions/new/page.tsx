@@ -14,7 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import TransactionForm from "@/components/transaction-form";
+import NewTransactionForm from "./new-transaction-component";
 import { getCategories } from "@/data/getCategories";
 
 export default async function NewTransactionPage() {
@@ -47,7 +47,7 @@ export default async function NewTransactionPage() {
           <CardDescription>Fill details for new transaction</CardDescription>
         </CardHeader>
         <CardContent>
-          <TransactionForm categories={categories} />
+          <NewTransactionForm categories={categories} />
         </CardContent>
       </Card>
     </div>

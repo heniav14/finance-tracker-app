@@ -27,9 +27,11 @@ import {
 import { Button } from "./ui/button";
 import { CalendarIcon } from "lucide-react";
 import { Input } from "./ui/input";
+import { Category } from "@/Types/Category";
+import { createTransaction } from "@/app/dashboard/transactions/new/actions";
 
-const transactionFormSchema = z.object({
-  transactionType: z.enum(["Income", "Expense"]),
+export const transactionFormSchema = z.object({
+  transactionType: z.enum(["income", "expense"]),
   categoryID: z.coerce.number().positive("Please select a category"), // string value is converted to number and then validated
   transactionDate: z.coerce
     .date()
@@ -41,11 +43,23 @@ const transactionFormSchema = z.object({
     .max(300, "Description must contain a maximum of 300 characters"),
 });
 
+type Props = {
+  categories: Category[];
+  onSubmit: (data: z.infer<typeof transactionFormSchema>) => Promise<void>;
+  defaultValues?: {
+    transactionType: "income" | "expense";
+    amount: number;
+    categoryId: number;
+    description: string;
+    transactionDate: Date;
+  };
+};
+
 export default function TransactionForm({
   categories,
-}: {
-  categories: { id: number; name: string; type: "income" | "expense" }[];
-}) {
+  onSubmit,
+  defaultValues,
+}: Props) {
   const form = useForm<
     z.input<typeof transactionFormSchema>,
     any,
@@ -57,21 +71,22 @@ export default function TransactionForm({
       categoryID: 0,
       description: "",
       transactionDate: new Date(),
-      transactionType: "Income",
+      transactionType: "income",
+      ...defaultValues,
     },
   });
   const transactionType = form.watch("transactionType");
   const filteredCategories = categories.filter(
-    (category) => category.type === transactionType.toLowerCase(),
+    (category) => category.type === transactionType,
   );
-  console.log(categories, filteredCategories);
-  const handleSubmit = async (data: z.infer<typeof transactionFormSchema>) => {
-    console.log(data);
-  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <fieldset className="grid grid-cols-2 gap-y-5 gap-x-2">
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <fieldset
+          disabled={form.formState.isSubmitting}
+          className="grid grid-cols-2 gap-y-5 gap-x-2"
+        >
           {/* TRANSACTION TYPE SELECTOR */}
           <FormField
             control={form.control}
@@ -92,8 +107,8 @@ export default function TransactionForm({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Income">Income</SelectItem>
-                        <SelectItem value="Expense">Expense</SelectItem>
+                        <SelectItem value="income">Income</SelectItem>
+                        <SelectItem value="expense">Expense</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -196,7 +211,10 @@ export default function TransactionForm({
             }}
           ></FormField>
         </fieldset>
-        <fieldset className="mt-4 flex flex-col gap-5">
+        <fieldset
+          disabled={form.formState.isSubmitting}
+          className="mt-4 flex flex-col gap-5"
+        >
           {/* DESCRIPTION INPUT */}
           <FormField
             control={form.control}
