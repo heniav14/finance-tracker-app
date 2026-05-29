@@ -31,7 +31,7 @@ export default function NewTransactionForm({
       });
       return;
     }
-    toast.success("Success", {
+    toast.success("Success", { 
       description: "New transaction added",
       classNames: {
         toast: "!bg-green-500 !text-white !border-green-600",
