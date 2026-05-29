@@ -24,7 +24,7 @@ export default function Transactions() {
             <BreadcrumbLink asChild>
               <Link href="/dashboard">Dashboard</Link>
             </BreadcrumbLink>
-          </BreadcrumbItem>
+          </BreadcrumbItem> 
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>

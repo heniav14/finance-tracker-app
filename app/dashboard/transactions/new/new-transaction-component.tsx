@@ -8,12 +8,14 @@ import { createTransaction } from "./actions";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import z from "zod";
+import { useRouter } from "next/navigation";
 
 export default function NewTransactionForm({
   categories,
 }: {
   categories: Category[];
 }) {
+  const router = useRouter();
   const handleSubmit = async (data: z.infer<typeof transactionFormSchema>) => {
     const result = await createTransaction({
       amount: data.amount,
@@ -31,12 +33,15 @@ export default function NewTransactionForm({
       });
       return;
     }
-    toast.success("Success", { 
+    toast.success("Success", {
       description: "New transaction added",
       classNames: {
         toast: "!bg-green-500 !text-white !border-green-600",
       },
     });
+    router.push(
+      `/dashboard/transactions?month=${data.transactionDate.getMonth() + 1}&year=${data.transactionDate.getFullYear()}`,
+    );
   };
   return <TransactionForm onSubmit={handleSubmit} categories={categories} />;
 }
