@@ -46,6 +46,7 @@ export const transactionFormSchema = z.object({
 type Props = {
   categories: Category[];
   onSubmit: (data: z.infer<typeof transactionFormSchema>) => Promise<void>;
+
   defaultValues?: {
     transactionType: "income" | "expense";
     amount: number;
