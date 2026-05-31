@@ -29,6 +29,9 @@ import Link from "next/link";
 import z from "zod";
 import numeral from "numeral";
 import { Badge } from "@/components/ui/badge";
+import Filters from "./filters";
+import { getOrderByOperators } from "drizzle-orm";
+import { getTransactionYearRange } from "@/data/getTransactionYearRange";
 
 const today = new Date();
 const searchSchema = z.object({
@@ -57,6 +60,8 @@ export default async function Transactions({
 
   const transactions = await getTransactionsByMonth({ month, year });
 
+  const yearsRange = await getTransactionYearRange();
+
   return (
     <div className="w-full py-10 px-4">
       <Breadcrumb className="max-w-4xl mx-auto">
@@ -76,7 +81,8 @@ export default async function Transactions({
         <CardHeader>
           <CardTitle className="flex justify-between">
             <span>{format(selectedDate, "MMM yyyy")} Transactions</span>
-            <div>Dropdowns</div>
+            <div>
+            <Filters year={year} month={month} yearsRange={yearsRange} /></div>
           </CardTitle>
         </CardHeader>
         <CardContent>
