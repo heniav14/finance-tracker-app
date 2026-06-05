@@ -50,7 +50,7 @@ type Props = {
   defaultValues?: {
     transactionType: "income" | "expense";
     amount: number;
-    categoryId: number;
+    categoryID: number;
     description: string;
     transactionDate: Date;
   };
