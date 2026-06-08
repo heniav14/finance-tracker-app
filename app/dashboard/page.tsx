@@ -1,9 +1,13 @@
 import RecentTransactions from "./recent-transactions";
+import Cashflow from "./transactions/cashflow";
 
 export default function Dashboard() {
+
+
   return (
     <div className="w-full py-10 px-4">
       <h1 className="text-4xl fonst-semibold pb-5">Dashboard</h1>
+      <Cashflow />
       <RecentTransactions />
     </div>
   );
