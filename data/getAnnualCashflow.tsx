@@ -18,7 +18,10 @@ export async function getAnnualCashflow(year: number) {
       month,
       totalIncome: sum(
         sql`CASE WHEN ${categoriesTable.type} = 'income' THEN ${transactionsTable.amount} ELSE 0 END`,
-      ), 
+      ),
+      totalExpenses: sum(
+        sql`CASE WHEN ${categoriesTable.type} = 'expense' THEN ${transactionsTable.amount} ELSE 0 END`,
+      ),
     })
     .from(transactionsTable)
     .leftJoin(
@@ -33,6 +36,21 @@ export async function getAnnualCashflow(year: number) {
     )
     .groupBy(month);
 
-  console.log(cashflow);
+  const annualCashflow: {
+    month: number;
+    income: number;
+    expenses: number;
+  }[] = [];
+
+  for (let i = 1; i <= 12; i++) {
+    const monthlyCashflow = cashflow.find((cf) => Number(cf.month) === i);
+    annualCashflow.push({
+      month: i,
+      income: Number(monthlyCashflow?.totalIncome ?? 0),
+      expenses: Number(monthlyCashflow?.totalExpenses ?? 0),
+    });
+  }
+
+  console.log(annualCashflow);
   return { cashflow };
 }

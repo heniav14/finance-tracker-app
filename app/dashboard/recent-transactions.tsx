@@ -8,7 +8,7 @@ export default async function RecentTransactions() {
   const recentTransactions = await getRecentTransactions();
 
   return (
-    <Card>
+    <Card className="mt-4 max-w-4xl mx-auto">
       <CardHeader>
         <CardTitle className="flex justify-between">
           <span>Recent Transactions</span>
